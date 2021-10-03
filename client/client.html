@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>D&D 5e Character Creater</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+  <script type="text/babel">
+    const listCharacters = (charactersObj, content) => {
+      // Create the parent unordered list
+      const ul = document.createElement('ul');
+      // Loop through the characters, creating a list of all of them
+      for(let key of Object.keys(charactersObj)) {
+        // Get the values for each character
+        const li = document.createElement('li');
+        const name = charactersObj[key].name;
+        const level = charactersObj[key].level;
+        const race = charactersObj[key].race;
+        const charClass = charactersObj[key].class;
+        li.innerHTML = `<p><b>${name}</b></p>: Level ${level} ${race} ${charClass}`;
+        // Add the character (list item) to the list
+        ul.appendChild(li);
+      }
+      // Add the list of characters to the content section
+      content.appendChild(ul);
+    };
+
+    const parseJSON = (xhr, content) => {
+      if(xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json') {
+        const obj = JSON.parse(xhr.response);
+        console.log(obj);
+
+        if(obj.message) {
+          content.innerHTML += `<br><p>Message: ${obj.message}</p>`;
+        }
+
+        if(obj.characters) {
+          // content.innerHTML += `<br><p>${JSON.stringify(obj.characters)}</p>`;
+          listCharacters(obj.characters, content);
+        }
+      }
+    };
+
+    const handleResponse = (xhr) => {
+      const content = document.querySelector('#content');
+      
+      switch(xhr.status) {
+        case 200:
+          content.innerHTML = '<b>Characters:</b>';
+          break;
+        case 201:
+          content.innerHTML = '<b>New Character Created!</b>';
+          break;
+        case 204:
+          content.innerHTML = '<b>Character Updated!</b>';
+          break;
+        case 400:
+          content.innerHTML = '<b>Bad Request</b>';
+          break;
+        case 404:
+          content.innerHTML = '<b>Not Found</b>';
+          break;
+        default:
+          content.innerHTML = '<b>Error</b>';
+          break;
+      }
+
+      parseJSON(xhr, content);
+    };
+
+    const requestUpdate = (e) => {      
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', '/getCharacters');
+      
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.onload = () => handleResponse(xhr);
+      xhr.send();
+      
+      e.preventDefault();
+      return false;
+    };
+
+    const sendPost = (e, createForm) => {
+      e.preventDefault();
+
+      const nameAction = createForm.getAttribute('action');
+      const nameMethod = createForm.getAttribute('method');
+      
+      const nameField = createForm.querySelector('#nameField');
+      const levelField = createForm.querySelector('#levelField');
+      const raceField = createForm.querySelector('#race');
+      const classField = createForm.querySelector('#class');
+      
+      const xhr = new XMLHttpRequest();
+      xhr.open(nameMethod, nameAction);
+      
+      xhr.setRequestHeader ('Accept', 'application/json');
+      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      
+      xhr.onload = () => handleResponse(xhr);
+
+      const formData = `name=${nameField.value}&level=${levelField.value}&race=${raceField.value}&class=${classField.value}`;
+      xhr.send(formData);
+    
+      return false;
+    };
+
+    const toBeImplemented = (e) => {
+      const content = document.querySelector('#content');
+      content.innerHTML = 'This functionality has not been implemented yet.';
+
+      e.preventDefault();
+      return false;
+    };
+
+    const init = () => {
+      const raceInfoForm = document.querySelector('#raceInfoForm');
+      const raceInfo = (e) => toBeImplemented(e);
+      raceInfoForm.addEventListener('submit', raceInfo);
+
+      const classInfoForm = document.querySelector('#classInfoForm');
+      const classInfo = (e) => toBeImplemented(e);
+      classInfoForm.addEventListener('submit', classInfo);
+
+      const getCharactersForm = document.querySelector('#getCharactersForm');
+      const getCharacters = (e) => requestUpdate(e);
+      getCharactersForm.addEventListener('submit', getCharacters);
+
+      const addCharacterForm = document.querySelector('#newCharacterForm');
+      const addCharacter = (e) => sendPost(e, addCharacterForm);
+      addCharacterForm.addEventListener('submit', addCharacter);
+    };
+
+    window.onload = init;
+  </script>
+</head>
+<body>
+  <h1>Dungeons & Dragons 5e API</h1>
+  <main>
+    <section id="info">
+      <h2>Info</h2>
+      <!-- Form to get race info -->
+      <form id="raceInfoForm" class="groupingItem">
+        <label for="raceInfo">Race: </label>
+        <select id="raceInfo" name="raceInfo">
+          <option value="no-race"></option>
+          <option value="Dragonborn">Dragonborn</option>
+          <option value="Dwarf">Dwarf</option>
+          <option value="Elf">Elf</option>
+          <option value="Gnome">Gnome</option>
+          <option value="Half-elf">Half-Elf</option>
+          <option value="Half-orc">Half-orc</option>
+          <option value="Halfling">Halfling</option>
+          <option value="Human">Human</option>
+          <option value="Tiefling">Tiefling</option>
+        </select>
+        <input class="button" type="submit" value="Get Race Info"/>
+      </form>
+      <!-- Form to get class info -->
+      <form id="classInfoForm" class="groupingItem">
+        <label for="classInfo">Class: </label>
+        <select id="classInfo" name="classInfo">
+          <option value="no-class"></option>
+          <option value="Barbarian">Barbarian</option>
+          <option value="Bard">Bard</option>
+          <option value="Cleric">Cleric</option>
+          <option value="Druid">Druid</option>
+          <option value="Fighter">Fighter</option>
+          <option value="Monk">Monk</option>
+          <option value="Paladin">Paladin</option>
+          <option value="Ranger">Ranger</option>
+          <option value="Rogue">Rogue</option>
+          <option value="Socerer">Socerer</option>
+          <option value="Warlock">Warlock</option>
+          <option value="Wizard">Wizard</option>
+        </select>
+        <input class="button groupingItem" type="submit" value="Get Class Info"/>
+      </form>
+      <!-- Form to get list of created characters -->
+      <form id="getCharactersForm" action="/getCharacters" method="get">
+        <input class="button" type="submit" value="Get Created Characters"/>
+      </form>
+    </section>
+    <section id="creation">
+      <h2>Character Creater</h2>
+      <form id="newCharacterForm" action="/addCharacter" method="post">
+        <!-- Name input -->
+        <div class="groupingItem">
+          <label for="name">Name: </label>
+          <input id="nameField" type="text" name="name" />
+        </div>
+        <!-- Level input (1-20) -->
+        <div class="groupingItem">
+          <label for="level">Level: </label>
+          <input id="levelField" type="number" name="level" min="1" max="20" step="1"/>
+          <!-- Race input -->
+          <label for="race">Race: </label>
+          <select id="race" name="race">
+            <option value="no-race"></option>
+            <option value="Dragonborn">Dragonborn</option>
+            <option value="Dwarf">Dwarf</option>
+            <option value="Elf">Elf</option>
+            <option value="Gnome">Gnome</option>
+            <option value="Half-elf">Half-Elf</option>
+            <option value="Half-orc">Half-orc</option>
+            <option value="Halfling">Halfling</option>
+            <option value="Human">Human</option>
+            <option value="Tiefling">Tiefling</option>
+          </select>
+          <!-- Class input -->
+          <label for="class">Class: </label>
+          <select id="class" name="class">
+            <option value="no-class"></option>
+            <option value="Barbarian">Barbarian</option>
+            <option value="Bard">Bard</option>
+            <option value="Cleric">Cleric</option>
+            <option value="Druid">Druid</option>
+            <option value="Fighter">Fighter</option>
+            <option value="Monk">Monk</option>
+            <option value="Paladin">Paladin</option>
+            <option value="Ranger">Ranger</option>
+            <option value="Rogue">Rogue</option>
+            <option value="Socerer">Socerer</option>
+            <option value="Warlock">Warlock</option>
+            <option value="Wizard">Wizard</option>
+          </select>
+        </div>
+        <input class="button groupingItem" type="submit" value="Add Character"/>
+      </form>
+    </section>
+  </main>
+  <section id="content">
+  </section>
+</body>
+</html>
