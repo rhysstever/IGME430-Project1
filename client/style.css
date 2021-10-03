@@ -24,11 +24,7 @@ main {
   margin: 0.5rem 0rem;
 }
 
-#info {
-  text-align: center;
-}
-
-#creation {
+#info, #creation {
   text-align: center;
 }
 
@@ -43,4 +39,17 @@ main {
   margin-top: 100px;
   font-size: 2em;
   text-align: center;
+}
+
+@media only screen and (max-width: 1024px) {
+  main {
+    display: grid;
+    grid-template-columns: 100%;  
+    margin: 0 auto;
+  }
+  
+  #info, #creation {
+    text-align: center;
+    margin: 1rem 0rem;
+  }
 }
