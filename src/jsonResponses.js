@@ -56,6 +56,7 @@ const updateCharacter = (request, response, body) => {
   characters[body.name].class = body.class;
 
   if (responseCode === 201) {
+    responseJSON.message = 'Created Successfully!';
     return respondJSON(request, response, responseCode, responseJSON);
   }
 

@@ -68,7 +68,7 @@
       parseJSON(xhr, content);
     };
 
-    const requestUpdate = (e) => {      
+    const requestUpdate = (e) => {
       const method = userForm.querySelector('#methodSelect').value;
 
       const xhr = new XMLHttpRequest();
@@ -77,7 +77,7 @@
       xhr.setRequestHeader('Accept', 'application/json');
       xhr.onload = () => handleResponse(xhr);
       xhr.send();
-      
+
       e.preventDefault();
       return false;
     };
