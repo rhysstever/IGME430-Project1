@@ -13,6 +13,10 @@ const urlStruct = {
     '/getCharacters': jsonResponseHandler.getCharacters,
     notFound: jsonResponseHandler.notFound,
   },
+  HEAD: {
+    '/getCharacters': jsonResponseHandler.getCharactersMeta,
+    notFound: jsonResponseHandler.notFound,
+  },
 };
 
 const handlePost = (request, response, parsedURL) => {

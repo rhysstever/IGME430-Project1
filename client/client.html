@@ -69,8 +69,10 @@
     };
 
     const requestUpdate = (e) => {      
+      const method = userForm.querySelector('#methodSelect').value;
+
       const xhr = new XMLHttpRequest();
-      xhr.open('GET', '/getCharacters');
+      xhr.open(method, '/getCharacters');
       
       xhr.setRequestHeader('Accept', 'application/json');
       xhr.onload = () => handleResponse(xhr);
@@ -178,6 +180,10 @@
       </form>
       <!-- Form to get list of created characters -->
       <form id="getCharactersForm" action="/getCharacters" method="get">
+        <select id="methodSelect">
+          <option value="get">GET</option>
+          <option value="head">HEAD</option>
+        </select>
         <input class="button" type="submit" value="Get Created Characters"/>
       </form>
     </section>

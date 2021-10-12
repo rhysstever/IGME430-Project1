@@ -27,6 +27,8 @@ const getCharacters = (request, response) => {
   return respondJSON(request, response, 200, responseJSON);
 };
 
+const getCharactersMeta = (request, response) => respondJSONMeta(request, response, 200);
+
 const updateCharacter = (request, response, body) => {
   // Prepare a message if the user is missing parameters
   const responseJSON = {
@@ -69,9 +71,12 @@ const notFound = (request, response) => {
   return respondJSON(request, response, 404, responseObj);
 };
 
+const notFoundMeta = (request, response) => respondJSONMeta(request, response, 404);
+
 module.exports = {
-  respondJSON,
   getCharacters,
+  getCharactersMeta,
   updateCharacter,
   notFound,
+  notFoundMeta,
 };
