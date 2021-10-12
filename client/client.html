@@ -46,7 +46,7 @@
       
       switch(xhr.status) {
         case 200:
-          content.innerHTML = '<b>Characters:</b>';
+          content.innerHTML = '<b>Success</b>';
           break;
         case 201:
           content.innerHTML = '<b>New Character Created!</b>';
@@ -68,7 +68,7 @@
       parseJSON(xhr, content);
     };
 
-    const requestUpdate = (e) => {
+    const requestUpdate = (e, userForm) => {
       const method = userForm.querySelector('#methodSelect').value;
 
       const xhr = new XMLHttpRequest();
@@ -125,7 +125,7 @@
       classInfoForm.addEventListener('submit', classInfo);
 
       const getCharactersForm = document.querySelector('#getCharactersForm');
-      const getCharacters = (e) => requestUpdate(e);
+      const getCharacters = (e) => requestUpdate(e, getCharactersForm);
       getCharactersForm.addEventListener('submit', getCharacters);
 
       const addCharacterForm = document.querySelector('#newCharacterForm');
