@@ -35,7 +35,7 @@ const updateCharacter = (request, response, body) => {
     message: 'Name, level, race, and class are all required',
   };
 
-  if (!body.name || !body.level || !body.race || body.race === 'no-race' || !body.class || body.class === 'no-class') {
+  if (!body.name || !body.level || !body.race || body.race === 'none' || !body.class || body.class === 'none') {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }

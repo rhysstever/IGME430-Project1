@@ -11,6 +11,8 @@ const urlStruct = {
     '/': htmlResponseHandler.getIndex,
     '/style.css': htmlResponseHandler.getCSS,
     '/getCharacters': jsonResponseHandler.getCharacters,
+    '/getRaceInfo': jsonResponseHandler.getCharacters,
+    '/getClassInfo': jsonResponseHandler.getCharacters,
     notFound: jsonResponseHandler.notFound,
   },
   HEAD: {
