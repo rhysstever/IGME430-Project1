@@ -44,10 +44,12 @@
     };
 
     const displayRaceInfo = (raceObj, content) => {
-      const speedText = raceObj.speed + ' ft.';
+      const speedText = '<b>Speed. </b> ' + raceObj.speed + ' ft.';
       createBaseElement(speedText, content);
-      const sizeText = 'Size ' + raceObj.size;
+      const sizeText = '<b>Size. </b> ' + raceObj.size_description;
       createBaseElement(sizeText, content);
+      const langText = '<b>Languages. </b> ' + raceObj.language_desc;
+      createBaseElement(langText, content);
     };
 
     const displayClassInfo = (classObj, content) => {
@@ -185,14 +187,6 @@
       return false;
     };
 
-    const toBeImplemented = (e) => {
-      const content = document.querySelector('#content');
-      content.innerHTML = 'This functionality has not been implemented yet.';
-
-      e.preventDefault();
-      return false;
-    };
-
     const init = () => {
       const raceInfoForm = document.querySelector('#raceInfoForm');
       const raceInfo = (e) => requestUpdate(e, raceInfoForm);
@@ -217,11 +211,12 @@
 <body>
   <h1>Dungeons & Dragons 5e Character Creater</h1>
   <main>
-    <section id="info">
+    <section id="info" class="mainItem">
       <h2>Info</h2>
+
       <!-- Form to get race info -->
       <form id="raceInfoForm" class="groupingItem dndapi" action="/getRaceInfo" method="get">
-        <select id="raceInfo" class="select-info form-control" name="raceInfo">
+        <select id="raceInfo" class="select-info form-control inputSpacing" name="raceInfo">
           <option value="no-race" selected>Race</option>
           <option value="dragonborn">Dragonborn</option>
           <option value="dwarf">Dwarf</option>
@@ -236,9 +231,10 @@
         <!-- <label class="form-label" for="raceInfo">Race</label> -->
         <input class="btn btn-primary btn-rounded" type="submit" id="raceInfoButton" value="Get Race Info"/>
       </form>
+
       <!-- Form to get class info -->
       <form id="classInfoForm" class="groupingItem dndapi" action="/getClassInfo" method="get">
-        <select id="classInfo" class="select-input form-control" name="classInfo">
+        <select id="classInfo" class="select-input form-control inputSpacing" name="classInfo">
           <option value="no-class" selected>Class</option>
           <option value="barbarian">Barbarian</option>
           <option value="bard">Bard</option>
@@ -256,31 +252,37 @@
         <!-- <label class="form-label" for="classInfo">Class</label> -->
         <input class="btn btn-primary btn-rounded" type="submit" id="classInfoButton" value="Get Class Info"/>
       </form>
+
       <!-- Form to get list of created characters -->
       <form id="getCharactersForm" action="/getCharacters">
-        <select id="methodSelect">
+        <select id="methodSelect" class="select-input form-control inputSpacing">
           <option value="get">GET</option>
           <option value="head">HEAD</option>
         </select>
         <input class="btn btn-primary btn-rounded" type="submit" value="Get Created Characters"/>
       </form>
+
     </section>
-    <section id="creation">
+    <section id="creation" class="mainItem">
       <h2>Character Creater</h2>
       <form id="newCharacterForm" action="/addCharacter" method="post">
+
         <!-- Name input -->
-        <div class="form-outline groupingItem">
-          <input id="nameField" type="text" name="name" class="form-control" />
-          <label class="form-label" for="name">Name: </label>
-        </div>
         <div class="groupingItem">
+          <label class="form-label" for="nameField">Name: </label>
+          <input type="text" id="nameField" class="form-control inputSpacing" name="name"/>
+        </div>
+
+        <div class="groupingItem">
+
           <!-- Level input (1-20) -->
-          <div class="form-outline">
-            <input type="number" id="levelField" class="form-control" name="level" min="1" max="20" step="1"/>
-            <label class="form-label" for="level">Level</label>
+          <div id="levelInput">
+            <label class="form-label" for="levelField">Level: </label>
+            <input type="number" id="levelField" class="form-control inputSpacing" name="level" min="1" max="20" step="1"/>
           </div>
+
           <!-- Race input -->
-          <div class="form-outline">
+          <div class="inputSpacing">
             <select id="race" class="select-input form-control" name="race">
               <option value="no-race" selected>Race</option>
               <option value="Dragonborn">Dragonborn</option>
@@ -295,8 +297,9 @@
             </select>
             <!-- <label class="form-label select-label" for="race">Race</label> -->
           </div>
+
           <!-- Class input -->
-          <div class="form-outline">
+          <div class="inputSpacing">
             <select id="class" class="select-input form-control" name="class">
               <option value="no-class" selected>Class</option>
               <option value="Barbarian">Barbarian</option>
@@ -314,6 +317,7 @@
             </select>
             <!-- <label class="form-label select-label" for="class">Class</label> -->
           </div>
+
         </div>
         <input class="btn btn-primary btn-rounded groupingItem" type="submit" value="Add Character"/>
       </form>
@@ -321,5 +325,11 @@
   </main>
   <section id="content">
   </section>
+  <footer>
+    <p style="background-color: rgba(0, 0, 0, 0.2);">
+      Rhys Stever
+      <a class="text-dark" href="http://www.dnd5eapi.co/">D&D 5e API</a>
+    </p>
+  </footer>
 </body>
 </html>

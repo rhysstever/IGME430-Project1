@@ -3,6 +3,7 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
 h1 {
@@ -10,15 +11,30 @@ h1 {
 }
 
 main {
+  flex: 1 0 auto;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
   margin: 0 auto;
 }
 
-.button {
-  padding: 0rem 1rem;
-  max-width: 14rem;
+footer {
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem;
+}
+
+p > footer {
+  text-align: center;
+  margin: 0;
+}
+
+.mainItem {
+  padding: 1rem;
+  background-color: #EEEEEE;
 }
 
 .groupingItem {
@@ -28,6 +44,10 @@ main {
 
 .characterList {
   list-style: none;
+}
+
+.inputSpacing {
+  margin: 0rem 0.5rem;
 }
 
 #info, #creation {
@@ -41,9 +61,18 @@ main {
   padding: 0rem 4rem;
 }
 
+#levelInput, #getCharactersForm {
+  display: flex;
+  flex-direction: row;
+}
+
 #content {
-  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
+  max-width: 20rem;
+  margin: 1rem auto;
 }
 
 @media only screen and (max-width: 1024px) {
